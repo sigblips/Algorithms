@@ -1,10 +1,10 @@
-# Compiler flags
-link_libraries(fftw3f m)
+# Compile each standalone program
 
-# This tells CMake to fib.c and name it fibonacci
-add_executable(sqfft sqfft.c )
-add_executable(sqpower sqpower.c)
-add_executable(sqread sqread.c)
-add_executable(sqsamples sqsamples.c)
-add_executable(sqsum sqsum.c)
-add_executable(sqwindow sqwindow.c)
+set(CORELIBS ${FFTW_LIBRARIES} ${GSL_LIBRARY} m)
+set(PROGRAMS sqfft sqpower sqread sqsamples sqsum sqwindow)
+
+foreach(program ${PROGRAMS})
+    add_executable(${program} ${program}.c)
+    target_link_libraries(${program} ${CORELIBS})
+endforeach(program)
+
