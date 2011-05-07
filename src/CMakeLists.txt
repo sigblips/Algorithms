@@ -1,9 +1,3 @@
-# Specify the version being used as well as the language
-cmake_minimum_required(VERSION 2.6)
-
-# Name your project here
-project(modules)
-
 # Compiler flags
 link_libraries(fftw3f m)
 

@@ -1,4 +1,4 @@
-PROJECT(setikit)
+PROJECT(setikit C)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
@@ -28,11 +28,6 @@ endif(APPLE)
 
 # Directory where custom cmake files reside
 SET (CMAKE_MODULE_PATH ${setikit_SOURCE_DIR}/CMake)
-
-# Check for availability of a C compiler
-INCLUDE(${CMAKE_ROOT}/Modules/CheckCCompilerFlag.cmake)
-
-MESSAGE("-- CC  compiler flags: ${CMAKE_C_FLAGS}")
 
 # Check for mandatory libraries; abort and do not create a makefile if these are not found.
 find_package(FFTW)
