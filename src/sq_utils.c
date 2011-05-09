@@ -34,8 +34,8 @@ int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns)
         return err_arg_bounds;
     
     unsigned long coli = 0;
-    
     float val;
+    
     while (fread(&val, sizeof(float), 1, instream) == 1)
     {
         fprintf(outstream, " %e", val);

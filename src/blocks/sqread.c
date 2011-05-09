@@ -27,9 +27,6 @@ unsigned int cols = 0;
 
 int main(int argc, char *argv[])
 {
-    int coli;
-    float val;
-
     int opt;
 
     while ((opt = getopt(argc, argv, "c:")) != -1)
@@ -42,19 +39,15 @@ int main(int argc, char *argv[])
         }
     }
 
-    coli = 0;
-    while (fread(&val, sizeof(float), 1, stdin) == 1)
+    long status = sq_read_stream(stdin, stdout, cols);
+    
+    if(status <= 0)
     {
-        printf(" %e", val);
-        coli++;
-        if (!(coli < cols))
-        {
-            printf("\n");
-            coli = 0;
-        }
+        print_usage(usage_text);
+        exit(EXIT_FAILURE);
     }
-
+    else
+        fprintf(stderr, "\nNumber of samples read: %ld\n", status);
+    
     exit(EXIT_SUCCESS);
 }
-
-
