@@ -42,12 +42,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (!(cols > 0))
-    {
-        print_usage(usage_text);
-        exit(EXIT_FAILURE);
-    }
-
     coli = 0;
     while (fread(&val, sizeof(float), 1, stdin) == 1)
     {
