@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "sq_utils.h"
+
 //          1         2         3         4         5         6         7
 // 123456789012345678901234567890123456789012345678901234567890123456789012
 char *usage_text[] =
@@ -22,8 +24,6 @@ char *usage_text[] =
 };
 
 unsigned int cols = 0;
-
-void stdout_usage();
 
 int main(int argc, char *argv[])
 {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     if (!(cols > 0))
     {
-        stdout_usage();
+        print_usage(usage_text);
         exit(EXIT_FAILURE);
     }
 
@@ -61,14 +61,6 @@ int main(int argc, char *argv[])
     }
 
     exit(EXIT_SUCCESS);
-}
-
-void stdout_usage()
-{
-    unsigned int i;
-
-    for (i = 0; i < (sizeof(usage_text) / sizeof(char *)); i++)
-        fprintf(stderr, "%s\n", usage_text[i]);
 }
 
 

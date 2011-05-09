@@ -7,7 +7,7 @@
  * Prints a processing block's usage to the output stream.
  * @param usage_text A two-dimensional character array; each row is printed on a new line.
  */
-void print_usage(char* usage_text[]);
+void print_usage(char** usage_text);
 
 /**
  * Reads a sequence of float values from a float array, and writes them as text values to the output stream, in the specified number of columns.
