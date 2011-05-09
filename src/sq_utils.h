@@ -9,6 +9,12 @@
  */
 void print_usage(char** usage_text);
 
+/** Takes a string and writes it as a log message to a given stream.
+ * @param message The log message.
+ * @param outstream The stream to write to, eg. stderr.
+ */
+void write_log(char* message, FILE* outstream);
+
 /**
  * Reads a sequence of float values from a float array, and writes them as text values to the output stream, in the specified number of columns.
  * @param inarray Input array of floats.

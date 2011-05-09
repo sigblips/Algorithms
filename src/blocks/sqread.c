@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "sq_utils.h"
+#include <sq_utils.h>
 
 //          1         2         3         4         5         6         7
 // 123456789012345678901234567890123456789012345678901234567890123456789012
@@ -28,7 +28,6 @@ unsigned int cols = 0;
 int main(int argc, char *argv[])
 {
     int opt;
-
     while ((opt = getopt(argc, argv, "c:")) != -1)
     {
         switch (opt)
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     else
-        fprintf(stderr, "\nNumber of samples read: %ld\n", status);
+        fprintf(stderr, "Number of samples read: %ld\n", status);
     
     exit(EXIT_SUCCESS);
 }
