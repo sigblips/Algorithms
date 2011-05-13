@@ -2,6 +2,7 @@
 #define SQ_UTILS_H
 
 #include <stdio.h>
+#include <sys/types.h>
 
 /** 
  * Prints a processing block's usage to the output stream.
@@ -14,6 +15,9 @@ void print_usage(char** usage_text);
  * @param outstream The stream to write to, eg. stderr.
  */
 void write_log(char* message, FILE* outstream);
+
+void alloc_char_2d(signed char** array, uint nrows, unsigned int ncolumns);
+void alloc_float_2d(float** array, uint nrows, unsigned int ncolumns);
 
 /**
  * Reads a sequence of float values from a float array, and writes them as text values to the output stream, in the specified number of columns.

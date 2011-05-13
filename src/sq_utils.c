@@ -1,5 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
+#include <sys/types.h>
 
 #include "sq_constants.h"
 #include "sq_utils.h"
@@ -26,6 +27,46 @@ void write_log(char* message, FILE* outstream)
                 (bdt.tm_year + 1900), (bdt.tm_mon + 1), bdt.tm_mday,
                 bdt.tm_hour, bdt.tm_min, bdt.tm_sec,
                 (tv.tv_usec / 1000), message);
+}
+
+void alloc_char_2d(signed char ** array, uint nrows, unsigned int ncolumns)
+{
+    array = calloc(nrows, sizeof(signed char *));
+    if(array == NULL)
+    {
+        fprintf(stderr, "out of memory\n");
+        return;
+    }
+    int i;
+    for(i = 0; i < nrows; i++)
+    {
+        array[i] = calloc(ncolumns, sizeof(signed char));
+        if(array[i] == NULL)
+        {
+            fprintf(stderr, "out of memory\n");
+            return;
+        }
+    }
+}
+
+void alloc_float_2d(float** array, uint nrows, unsigned int ncolumns)
+{
+    array = (float **) malloc(nrows * sizeof(float *));
+    if(array == NULL)
+    {
+        fprintf(stderr, "out of memory\n");
+        return;
+    }
+    int i;
+    for(i = 0; i < nrows; i++)
+    {
+        array[i] = (float *) malloc(ncolumns * sizeof(float));
+        if(array[i] == NULL)
+        {
+            fprintf(stderr, "out of memory\n");
+            return;
+        }
+    }
 }
 
 

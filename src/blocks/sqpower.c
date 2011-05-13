@@ -13,8 +13,6 @@ unsigned int smpls_len = 100000;
 
 float *smpls_bfr;
 
-void mylog(char *msg);
-
 int main(int argc, char **argv)
 {
 
