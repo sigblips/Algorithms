@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
     long status = sq_read_stream(stdin, stdout, cols);
     
-    if(status <= 0)
+    if(status < 0)
     {
         print_usage(usage_text);
         exit(EXIT_FAILURE);
