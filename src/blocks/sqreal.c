@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "sq_dsp.h"
+#include "sq_utils.h"
+
 //          1         2         3         4         5         6         7
 // 123456789012345678901234567890123456789012345678901234567890123456789012
 char *usage_text[] =
@@ -26,19 +29,9 @@ char *usage_text[] =
 
 unsigned int sblen = 0;
 
-typedef float cmplx[2];
-
-cmplx *sbfr;
-float *rbfr;
-
-void stdout_usage();
-
 int main(int argc, char *argv[])
 {
-    int i;
-
     int opt;
-
     while ((opt = getopt(argc, argv, "l:")) != -1)
     {
         switch (opt)
@@ -49,33 +42,13 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (!(sblen > 0))
+    int status = sq_real(stdin, stdout, sblen);
+    
+    if(status < 0)
     {
-        stdout_usage();
+        print_usage(usage_text);
         exit(EXIT_FAILURE);
     }
 
-    sbfr = malloc(sblen * sizeof(cmplx));
-    rbfr = malloc(sblen * sizeof(float));
-
-    while (fread(sbfr, sizeof(cmplx), sblen, stdin) == sblen)
-    {
-        for (i = 0; i < sblen; i++)
-            rbfr[i] = sbfr[i][0];
-        fwrite(rbfr, sizeof(float), sblen, stdout);
-    }
-
-    free(rbfr);
-    free(sbfr);
-
     exit(EXIT_SUCCESS);
 }
-
-void stdout_usage()
-{
-    unsigned int i;
-
-    for (i = 0; i < (sizeof(usage_text) / sizeof(char *)); i++)
-        fprintf(stderr, "%s\n", usage_text[i]);
-}
-

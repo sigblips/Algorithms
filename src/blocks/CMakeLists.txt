@@ -2,7 +2,7 @@
 
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/../) 
 
-set(PROGRAMS sqfft sqpower sqread sqsample sqsum sqwindow)
+set(PROGRAMS sqfft sqpower sqread sqreal sqsample sqsum sqwindow)
 
 foreach(program ${PROGRAMS})
     add_executable(${program} ${program}.c)

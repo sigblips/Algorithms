@@ -112,3 +112,28 @@ int sq_window(FILE* instream, FILE* outstream, unsigned int wndw_len)
     
     return 0;
 }
+
+int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
+{
+    if (nsamples <= 0)
+        return err_arg_bounds;
+    
+    int i;
+    cmplx *sbfr;
+    float *rbfr;
+    
+    sbfr = malloc(nsamples * sizeof(cmplx));
+    rbfr = malloc(nsamples * sizeof(float));
+    
+    while (fread(sbfr, sizeof(cmplx), nsamples, stdin) == nsamples)
+    {
+        for (i = 0; i < nsamples; i++)
+            rbfr[i] = sbfr[i][0];
+        fwrite(rbfr, sizeof(float), nsamples, stdout);
+    }
+    
+    free(rbfr);
+    free(sbfr);
+    
+    return 0;
+}

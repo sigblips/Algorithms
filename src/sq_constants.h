@@ -19,5 +19,7 @@
 // Array indices
 #define REAL 0
 #define IMAG 1
+
+typedef float cmplx[2];
             
 #endif
