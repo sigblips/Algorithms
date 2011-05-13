@@ -45,8 +45,6 @@ int main(int argc, char *argv[])
         print_usage(usage_text);
         exit(EXIT_FAILURE);
     }
-    else
-        fprintf(stderr, "Number of samples read: %ld\n", status);
     
     exit(EXIT_SUCCESS);
 }
