@@ -23,7 +23,7 @@ char *usage_text[] =
     "DESCRIPTION                                                             ",
     "  -l  pos. integer (required),  length of sample buffer (number of      ",
     "      real,imag coefficient pairs input with a block read at a time and ",
-    "      number of real coefficients output with a block write at a time)  ",
+    "      number of imag coefficients output with a block write at a time)  ",
     "                                                                        "
 };
 
