@@ -30,4 +30,9 @@ int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int com
 int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples);
 int sq_imag(FILE* instream, FILE* outstream, unsigned int nsamples);
 
+int sq_fft(FILE* instream, FILE* outstream, 
+           unsigned int fft_len, 
+           unsigned char is_inverted, 
+           unsigned char is_measured );
+
 #endif

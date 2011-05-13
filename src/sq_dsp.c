@@ -2,6 +2,8 @@
 #include <math.h>
 #include <string.h>
 
+#include <fftw3.h>
+
 #include "sq_constants.h"
 #include "sq_dsp.h"
 #include "sq_utils.h"
@@ -148,4 +150,36 @@ int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
 int sq_imag(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
     return sq_component(instream, outstream, nsamples, IMAG);
+}
+
+int sq_fft(FILE* instream, FILE* outstream, unsigned int fft_len, unsigned char is_inverted, unsigned char is_measured)
+{
+    if (fft_len <= 0)
+        return err_arg_bounds;
+    
+    fftwf_complex *fft_bfr;
+    fftwf_plan plan;
+    
+    int i;
+    
+    fft_bfr = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * fft_len);
+    plan = fftwf_plan_dft_1d(fft_len, fft_bfr, fft_bfr,
+                             FFTW_FORWARD, (is_measured ? FFTW_MEASURE : FFTW_ESTIMATE));
+    
+    while (fread(fft_bfr, sizeof(fftwf_complex), fft_len, instream) == fft_len)
+    {
+        if (is_inverted)
+            for (i = 0; i < fft_len; i++)
+                fft_bfr[i][1] = -fft_bfr[i][1];  // conjugate
+        fftwf_execute(plan);
+        //  write negative channels first ...
+        fwrite(&fft_bfr[fft_len/2], sizeof(fftwf_complex), fft_len / 2, outstream);
+        //  ... then positive channels
+        fwrite(&fft_bfr[0], sizeof(fftwf_complex), fft_len / 2, outstream);
+    }
+    
+    fftwf_destroy_plan(plan);
+    fftwf_free(fft_bfr);
+    
+    return 0;
 }
