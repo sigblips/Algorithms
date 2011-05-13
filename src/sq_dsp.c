@@ -129,11 +129,11 @@ int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int com
     sbfr = malloc(nsamples * sizeof(cmplx));
     rbfr = malloc(nsamples * sizeof(float));
     
-    while (fread(sbfr, sizeof(cmplx), nsamples, stdin) == nsamples)
+    while (fread(sbfr, sizeof(cmplx), nsamples, instream) == nsamples)
     {
         for (i = 0; i < nsamples; i++)
             rbfr[i] = sbfr[i][component];
-        fwrite(rbfr, sizeof(float), nsamples, stdout);
+        fwrite(rbfr, sizeof(float), nsamples, outstream);
     }
     
     free(rbfr);
