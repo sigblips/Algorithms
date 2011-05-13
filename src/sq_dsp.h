@@ -24,4 +24,6 @@ int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples);
 
 int sq_sum(FILE* instream, FILE* outstream, unsigned int nsamples);
 
+int sq_window(FILE* instream, FILE* outstream, unsigned int window_length);
+
 #endif
