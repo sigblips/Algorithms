@@ -14,7 +14,11 @@
 int sq_sample(FILE* instream, FILE* outstream);
 
 /**
- * 
+ * Takes a stream of floats (alternating real, imaginary) as input signal
+ * and writes the instantaneous power samples to the output stream.
+ * @param instream Input stream of float data
+ * @param outstream Output stream of float data
+ * @return Code; negative if error.
  */
 int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples);
 
