@@ -113,9 +113,11 @@ int sq_window(FILE* instream, FILE* outstream, unsigned int wndw_len)
     return 0;
 }
 
-int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
+int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int component)
 {
     if (nsamples <= 0)
+        return err_arg_bounds;
+    if((component != 0) && (component != 1))
         return err_arg_bounds;
     
     int i;
@@ -128,7 +130,7 @@ int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
     while (fread(sbfr, sizeof(cmplx), nsamples, stdin) == nsamples)
     {
         for (i = 0; i < nsamples; i++)
-            rbfr[i] = sbfr[i][0];
+            rbfr[i] = sbfr[i][component];
         fwrite(rbfr, sizeof(float), nsamples, stdout);
     }
     
@@ -136,4 +138,14 @@ int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
     free(sbfr);
     
     return 0;
+}
+
+int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples)
+{
+    return sq_component(instream, outstream, nsamples, REAL);
+}
+
+int sq_imag(FILE* instream, FILE* outstream, unsigned int nsamples)
+{
+    return sq_component(instream, outstream, nsamples, IMAG);
 }

@@ -26,8 +26,8 @@ int sq_sum(FILE* instream, FILE* outstream, unsigned int nsamples);
 
 int sq_window(FILE* instream, FILE* outstream, unsigned int window_length);
 
+int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int component);
 int sq_real(FILE* instream, FILE* outstream, unsigned int nsamples);
-
 int sq_imag(FILE* instream, FILE* outstream, unsigned int nsamples);
 
 #endif
