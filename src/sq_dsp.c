@@ -14,7 +14,7 @@ int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples)
     
     smpls_bfr = malloc(nsamples * sizeof(float) * 2);
     
-    while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
+    while (fread(smpls_bfr, sizeof(float) * 2, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples ; smpli++)
         {
@@ -24,7 +24,7 @@ int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples)
             smpls_bfr[(smpli<<1)+1] = 0.0;
         }
 
-        fwrite(smpls_bfr, 8, nsamples, outstream);
+        fwrite(smpls_bfr, sizeof(float) * 2, nsamples, outstream);
     }
 
     free(smpls_bfr);
