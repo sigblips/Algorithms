@@ -35,4 +35,9 @@ int sq_fft(FILE* instream, FILE* outstream,
            unsigned char is_inverted, 
            unsigned char is_measured );
 
+int sq_offset(FILE* instream, FILE* outstream, 
+              unsigned int nsamples, 
+              float real_delta, 
+              float imag_delta);
+
 #endif
