@@ -42,4 +42,9 @@ int sq_offset(FILE* instream, FILE* outstream,
 
 int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples);
 
+int sq_scaleandrotate(FILE* instream, FILE* outstream, 
+                      unsigned int nsamples,
+                      float scale_factor,
+                      float radians );
+
 #endif

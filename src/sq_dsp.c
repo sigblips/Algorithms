@@ -232,3 +232,29 @@ int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples)
 
     return 0;
 }
+
+int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, float scale_factor, float radians)
+{
+    if (nsamples <= 0)
+        return err_arg_bounds;
+    
+    unsigned int smpli;
+    float *smpls_bfr;
+    
+    smpls_bfr = malloc(nsamples * 4 * 2);
+    
+    while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
+    {
+        for (smpli = 0; smpli < nsamples; smpli++)
+        {
+            smpls_bfr[(smpli<<1)+0] = scale_factor * (smpls_bfr[(smpli<<1)+0]*cos(radians) - smpls_bfr[(smpli<<1)+1]*sin(radians));
+            smpls_bfr[(smpli<<1)+1] = scale_factor * (smpls_bfr[(smpli<<1)+1]*cos(radians) + smpls_bfr[(smpli<<1)+0]*sin(radians));
+        }
+        
+        fwrite(smpls_bfr, 8, nsamples, outstream);
+    }
+    
+    free(smpls_bfr);
+    
+    return 0;
+}
