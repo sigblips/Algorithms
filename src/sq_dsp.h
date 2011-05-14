@@ -38,6 +38,8 @@ int sq_fft(FILE* instream, FILE* outstream,
 int sq_offset(FILE* instream, FILE* outstream, 
               unsigned int nsamples, 
               float real_delta, 
-              float imag_delta);
+              float imag_delta );
+
+int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples);
 
 #endif

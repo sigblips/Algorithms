@@ -194,18 +194,41 @@ int sq_offset(FILE* instream, FILE* outstream, unsigned int nsamples, float real
 
     smpls_bfr = malloc(nsamples * 4 * 2);
 
-    while (fread(smpls_bfr, 8, nsamples, stdin) == nsamples)
+    while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples; smpli++)
         {
             smpls_bfr[(smpli<<1)+0] += real_delta;
             smpls_bfr[(smpli<<1)+1] += imag_delta;
         }
-        
-        fwrite(smpls_bfr, 8, nsamples, stdout);
+
+        fwrite(smpls_bfr, 8, nsamples, outstream);
     }
 
     free(smpls_bfr);
+
+    return 0;
+}
+
+int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples)
+{
+    if (!((nsamples >= 2) && (nsamples <= MAX_SMPLS_LEN)))
+        return err_arg_bounds;
+
+    float *data_bfr;
+    unsigned int datai;
+
+    data_bfr = malloc(nsamples * sizeof(float) * 2);
+
+    while (fread(data_bfr, 8, nsamples, instream) == nsamples)
+    {
+        for (datai = 0; datai < nsamples; datai += 1)
+            data_bfr[(datai<<1)+1] *= -1.0;
+
+        fwrite(data_bfr, sizeof(float) * 2, nsamples, outstream);
+    }
+
+    free(data_bfr);
 
     return 0;
 }
