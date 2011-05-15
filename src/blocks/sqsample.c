@@ -10,8 +10,6 @@
 #include "sq_constants.h"
 #include "sq_dsp.h"
 
-void mylog(char *msg);
-
 int main(int argc, char **argv)
 {
     int status = sq_sample(stdin, stdout, SMPLS_PER_READ);
