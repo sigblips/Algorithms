@@ -243,12 +243,15 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, fl
     
     smpls_bfr = malloc(nsamples * 4 * 2);
     
+    float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples; smpli++)
         {
-            smpls_bfr[(smpli<<1)+0] = scale_factor * (smpls_bfr[(smpli<<1)+0]*cos(radians) - smpls_bfr[(smpli<<1)+1]*sin(radians));
-            smpls_bfr[(smpli<<1)+1] = scale_factor * (smpls_bfr[(smpli<<1)+1]*cos(radians) + smpls_bfr[(smpli<<1)+0]*sin(radians));
+            re = smpls_bfr[(smpli<<1)+0];
+            im = smpls_bfr[(smpli<<1)+1];
+            smpls_bfr[(smpli<<1)+0] = scale_factor * (re*cos(radians) - im*sin(radians));
+            smpls_bfr[(smpli<<1)+1] = scale_factor * (im*cos(radians) + re*sin(radians));
         }
         
         fwrite(smpls_bfr, 8, nsamples, outstream);
