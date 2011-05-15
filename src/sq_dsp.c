@@ -8,6 +8,41 @@
 #include "sq_dsp.h"
 #include "sq_utils.h"
 
+int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
+{
+    if((nsamples <= 0) || (nsamples > MAX_SMPLS_LEN))
+        return err_arg_bounds;
+    
+    uint64_t total_bytes_next_trigger = TOTAL_BYTES_TRIGGER_VAL;
+    signed char *smpls_in;
+    float *smpls_out;
+    uint64_t total_bytes = 0;
+    
+    unsigned int smpli;
+    
+    smpls_in = malloc(nsamples * sizeof(char) * 2);
+    smpls_out = malloc(nsamples * sizeof(float) * 2);
+    
+    while (fread(smpls_in, 2, nsamples, instream) == nsamples)
+    {
+        for (smpli = 0; smpli < nsamples; smpli++)
+        {
+            smpls_out[(smpli<<1) + REAL] = (float) smpls_in[(smpli<<1) + REAL];
+            smpls_out[(smpli<<1) + IMAG] = -(float) smpls_in[(smpli<<1) + IMAG];
+        }
+        fwrite(smpls_out, 8, nsamples, outstream);
+        total_bytes += (nsamples * 2);
+        if (total_bytes >= total_bytes_next_trigger)
+        {
+            total_bytes_next_trigger += TOTAL_BYTES_TRIGGER_VAL;
+            //sprintf(msg, "total bytes processed %lu", total_bytes);
+            //      mylog(msg);
+        }
+    }
+    
+    return 0;
+}
+
 int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
     float *smpls_bfr;

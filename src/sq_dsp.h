@@ -11,7 +11,7 @@
  * @param outstream Output stream of floats
  * @return Code; negative if error.
  */
-int sq_sample(FILE* instream, FILE* outstream);
+int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples);
 
 /**
  * Takes a stream of floats (alternating real, imaginary) as input signal
