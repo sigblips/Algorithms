@@ -261,3 +261,13 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, fl
     
     return 0;
 }
+
+int sq_scale(FILE* instream, FILE* outstream, unsigned int nsamples, float scale_factor)
+{
+    return sq_scaleandrotate(instream, outstream, nsamples, scale_factor, 0.0);
+}
+
+int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radians)
+{
+    return sq_scaleandrotate(instream, outstream, nsamples, 1.0, radians);
+}

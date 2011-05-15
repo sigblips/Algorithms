@@ -47,4 +47,7 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream,
                       float scale_factor,
                       float radians );
 
+int sq_scale(FILE* instream, FILE* outstream, unsigned int nsamples, float scale_factor);
+int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radians);
+
 #endif
