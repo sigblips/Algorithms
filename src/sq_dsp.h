@@ -50,4 +50,8 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream,
 int sq_scale(FILE* instream, FILE* outstream, unsigned int nsamples, float scale_factor);
 int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radians);
 
+int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians);
+
+int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_length);
+ 
 #endif

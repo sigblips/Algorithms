@@ -10,19 +10,19 @@
 
 int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
-    if((nsamples <= 0) || (nsamples > MAX_SMPLS_LEN))
+    if ((nsamples <= 0) || (nsamples > MAX_SMPLS_LEN))
         return err_arg_bounds;
-    
+
     uint64_t total_bytes_next_trigger = TOTAL_BYTES_TRIGGER_VAL;
     signed char *smpls_in;
     float *smpls_out;
     uint64_t total_bytes = 0;
-    
+
     unsigned int smpli;
-    
+
     smpls_in = malloc(nsamples * sizeof(char) * 2);
     smpls_out = malloc(nsamples * sizeof(float) * 2);
-    
+
     while (fread(smpls_in, 2, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples; smpli++)
@@ -39,7 +39,7 @@ int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
             //      mylog(msg);
         }
     }
-    
+
     return 0;
 }
 
@@ -272,12 +272,12 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, fl
 {
     if (nsamples <= 0)
         return err_arg_bounds;
-    
+
     unsigned int smpli;
     float *smpls_bfr;
-    
+
     smpls_bfr = malloc(nsamples * 4 * 2);
-    
+
     float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
     {
@@ -285,15 +285,15 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, fl
         {
             re = smpls_bfr[(smpli<<1)+0];
             im = smpls_bfr[(smpli<<1)+1];
-            smpls_bfr[(smpli<<1)+0] = scale_factor * (re*cos(radians) - im*sin(radians));
-            smpls_bfr[(smpli<<1)+1] = scale_factor * (im*cos(radians) + re*sin(radians));
+            smpls_bfr[(smpli<<1)+0] = scale_factor * (re * cos(radians) - im * sin(radians));
+            smpls_bfr[(smpli<<1)+1] = scale_factor * (im * cos(radians) + re * sin(radians));
         }
-        
+
         fwrite(smpls_bfr, 8, nsamples, outstream);
     }
-    
+
     free(smpls_bfr);
-    
+
     return 0;
 }
 
@@ -305,4 +305,85 @@ int sq_scale(FILE* instream, FILE* outstream, unsigned int nsamples, float scale
 int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radians)
 {
     return sq_scaleandrotate(instream, outstream, nsamples, 1.0, radians);
+}
+
+int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians)
+{
+    if (nsamples <= 0)
+        return err_arg_bounds;
+
+    unsigned int smpli;
+    float *smpls_bfr;
+    float angle = 0.0;
+
+    const float TWO_PI = 2.0 * M_PI;
+
+    radians = radians * -1.0;
+
+    smpls_bfr = malloc(nsamples * 4 * 2);
+
+    float re, im;
+    while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
+    {
+        for (smpli = 0; smpli < nsamples; smpli++)
+        {
+            angle += radians;
+            angle = (angle > TWO_PI) ? (angle - TWO_PI) : angle;
+            angle = (angle < -TWO_PI) ? (angle + TWO_PI) : angle;
+
+            re = smpls_bfr[(smpli<<1)+0];
+            im = smpls_bfr[(smpli<<1)+1];
+            smpls_bfr[(smpli<<1)+0] = (re * (float)cos(radians) - im * (float)sin(radians));
+            smpls_bfr[(smpli<<1)+1] = (im * (float)cos(radians) + re * (float)sin(radians));
+        }
+
+        fwrite(smpls_bfr, 8, nsamples, outstream);
+    }
+
+    free(smpls_bfr);
+
+    return 0;
+}
+
+int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
+{
+    // TODO: Not properly tested yet
+    if (!((zoom_len >= 2) && (zoom_len <= MAX_ZOOM_LEN)))
+        return err_arg_bounds;
+    
+    float *input_bfr;
+    float *output_bfr;
+
+    int inbfri, outbfri;
+    float sum_r, sum_i;
+
+    outbfri = 0;
+
+    input_bfr = malloc(zoom_len * sizeof(float) * 2);
+    output_bfr = malloc(ZOOM_OUTPUT_BFR_LEN * sizeof(float) * 2);
+    
+    while (fread(input_bfr, sizeof(float) * 2, zoom_len, instream) == zoom_len)
+    {
+        sum_r = 0.0;
+        sum_i = 0.0;
+        for (inbfri = 0; inbfri < zoom_len; inbfri++)
+        {
+            sum_r += input_bfr[(inbfri<<1)+0];
+            sum_i += input_bfr[(inbfri<<1)+1];
+        }
+        output_bfr[(outbfri<<1) + REAL] = sum_r;
+        output_bfr[(outbfri<<1) + IMAG] = sum_i;
+        outbfri++;
+        
+        if (!(outbfri < ZOOM_OUTPUT_BFR_LEN))
+        {
+            fwrite(output_bfr, sizeof(float) * 2, ZOOM_OUTPUT_BFR_LEN, outstream);
+            outbfri = 0;
+        }
+    }
+
+    free(input_bfr);
+    free(output_bfr);
+    
+    return 0;
 }
