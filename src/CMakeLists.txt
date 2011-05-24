@@ -1,6 +1,7 @@
 add_library(setikit ${LIB_TYPE}
                     sq_utils.c
                     sq_dsp.c
+                    sq_imaging.c
                     )
 
 set_target_properties(setikit PROPERTIES LINKER_LANGUAGE "C")
