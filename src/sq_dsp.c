@@ -350,7 +350,7 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
     // TODO: Not properly tested yet
     if (!((zoom_len >= 2) && (zoom_len <= MAX_ZOOM_LEN)))
         return err_arg_bounds;
-    
+
     float *input_bfr;
     float *output_bfr;
 
@@ -361,7 +361,7 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
 
     input_bfr = malloc(zoom_len * sizeof(float) * 2);
     output_bfr = malloc(ZOOM_OUTPUT_BFR_LEN * sizeof(float) * 2);
-    
+
     while (fread(input_bfr, sizeof(float) * 2, zoom_len, instream) == zoom_len)
     {
         sum_r = 0.0;
@@ -374,7 +374,7 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
         output_bfr[(outbfri<<1) + REAL] = sum_r;
         output_bfr[(outbfri<<1) + IMAG] = sum_i;
         outbfri++;
-        
+
         if (!(outbfri < ZOOM_OUTPUT_BFR_LEN))
         {
             fwrite(output_bfr, sizeof(float) * 2, ZOOM_OUTPUT_BFR_LEN, outstream);
@@ -384,6 +384,110 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
 
     free(input_bfr);
     free(output_bfr);
-    
+
+    return 0;
+}
+
+void init_window(float* wndwbfr, unsigned int wndwlen, unsigned int folds)
+{
+    unsigned int wndwi;
+    unsigned int si;
+
+    unsigned int sinusoids = (folds / 2) + 1;
+
+    float h;
+
+    for (wndwi = 0; wndwi < wndwlen; wndwi++)
+    {
+        h = 0.5 * (1.0 - cos((2.0 * M_PI * (float) wndwi) / (float)(wndwlen - 1)));
+        wndwbfr[wndwi] = 0.0;
+        for (si = 0; si < sinusoids; si++)
+            wndwbfr[wndwi] += cos(((-2.0 * M_PI) / (float) wndwlen) *
+                                  (si * (((float) wndwi) - (((float)(wndwlen - 1)) / 2.0))));
+        wndwbfr[wndwi] *= h;
+        wndwbfr[wndwi] /= sinusoids;
+    }
+}
+
+int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int folds, unsigned int overlap, unsigned char is_window_dump)
+{
+    unsigned int wndwlen;
+
+    float *wndwbfr;
+    cmplx *readbfr;
+    cmplx *smplbfr;
+    cmplx *fftbfr;
+
+    unsigned int wndwi, readi, smpli, ffti;
+    unsigned int readlen;
+
+    wndwlen = folds * fftlen;
+    wndwbfr = malloc(wndwlen * sizeof(float));
+
+    init_window(wndwbfr, wndwlen, folds);
+
+
+    if (is_window_dump)
+    {
+        for (wndwi = 0; wndwi < wndwlen; wndwi++)
+            fprintf(outstream, "%e\n", wndwbfr[wndwi]);
+        free(wndwbfr);
+        return 0;
+    }
+
+    readlen = fftlen;
+    if (overlap == 25)
+        readlen = (fftlen * 3) / 4;
+    if (overlap == 50)
+        readlen = (fftlen * 2) / 4;
+
+    readbfr = malloc(readlen * sizeof(cmplx));
+    smplbfr = malloc(wndwlen * sizeof(cmplx));
+    fftbfr = malloc(fftlen * sizeof(cmplx));
+
+    // initially fill the sample buffer to satisfy the first weight,
+    // overlap, and add
+    if (!(fread(smplbfr, sizeof(cmplx), wndwlen, instream) == wndwlen))
+    {
+        free(fftbfr);
+        free(smplbfr);
+        free(readbfr);
+        free(wndwbfr);
+        return err_stream_read;
+    }
+
+    smpli = 0;
+
+    for (;;)
+    {
+        for (ffti = 0; ffti < fftlen; ffti++)
+            fftbfr[ffti][0] = fftbfr[ffti][1] = 0.0;
+        ffti = 0;
+        for (wndwi = 0; wndwi < wndwlen; wndwi++)
+        {
+            fftbfr[ffti][0] += wndwbfr[wndwi] * smplbfr[smpli][0];
+            fftbfr[ffti][1] += wndwbfr[wndwi] * smplbfr[smpli][1];
+            smpli++;
+            if (!(smpli < wndwlen)) smpli = 0;
+            ffti++;
+            if (!(ffti < fftlen)) ffti = 0;
+        }
+        fwrite(fftbfr, sizeof(cmplx), fftlen, outstream);
+        if (!(fread(readbfr, sizeof(cmplx), readlen, instream) == readlen))
+            break;
+        for (readi = 0; readi < readlen; readi++)
+        {
+            smplbfr[smpli][0] = readbfr[readi][0];
+            smplbfr[smpli][1] = readbfr[readi][1];
+            smpli++;
+            if (!(smpli < wndwlen)) smpli = 0;
+        }
+    }
+
+    free(fftbfr);
+    free(smplbfr);
+    free(readbfr);
+    free(wndwbfr);
+
     return 0;
 }

@@ -124,5 +124,12 @@ int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radi
 int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians);
 
 int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_length);
- 
+
+void init_window(float* wndwbfr, unsigned int wndwlen, unsigned int folds);
+int sq_wola(FILE* instream, FILE* outstream,
+            unsigned int fftlen,
+            unsigned int folds,
+            unsigned int overlap,
+            unsigned char is_window_dump);
+
 #endif
