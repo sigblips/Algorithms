@@ -5,6 +5,11 @@
 #include "sq_imaging.h"
 #include "sq_constants.h"
 
+void sq_no_scale(float* img_buf, int rows, int cols)
+{
+
+}
+
 void sq_linear_scale(float* img_buf, int rows, int cols)
 {
     unsigned int imgi;
