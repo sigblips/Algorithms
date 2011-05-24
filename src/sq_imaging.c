@@ -1,7 +1,9 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "sq_imaging.h"
+#include "sq_constants.h"
 
 void sq_linear_scale(float* img_buf, int rows, int cols)
 {
@@ -65,6 +67,31 @@ void sq_power_scale(float* img_buf, int rows, int cols)
         imgvalf -= min;
         imgvalf *= ((float) MAX_PIXEL_VAL) / (max - min);
         img_buf[imgi] = imgvalf;
+    }
+}
+
+void sq_read_img(FILE* instream, float* img_buf, int rows, int cols)
+{
+    unsigned int rowi;
+
+    if (!((rows > 0) && (cols > 0)))
+        return;
+
+    img_buf = malloc(sizeof(float) * rows * cols);
+
+    for (rowi = 0; rowi < rows; rowi++)
+    {
+        if (!(fread(&img_buf[rowi*cols], sizeof(float), cols, instream) == cols))
+        {
+            rows = rowi;
+            break;
+        }
+    }
+
+    if (!(rows > 0))
+    {
+        free(img_buf);
+        return;
     }
 }
 
