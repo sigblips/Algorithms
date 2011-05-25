@@ -17,6 +17,7 @@ set(PROGRAMS sqfft
              sqzoom
              sqpnm
              sqwola
+             sqgensine
    )
 
 foreach(program ${PROGRAMS})
