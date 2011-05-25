@@ -38,6 +38,18 @@ int sq_read_array(float inarray[], FILE* outstream, int ncolumns);
  */
 int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns);
 
+/**
+ * Takes 2-channel (quadrature) 8-bit data from the input stream,
+ * and writes samples in the form of floats to the output stream,
+ * in chunks of a given number of samples.
+ * @param instream Input stream with 2-channel 8-bit data.
+ * @param outstream Output stream of floats
+ * @param nsamples Number of samples to process at a time
+ * @return Code; negative if error.
+ */
+int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples);
+
+
 float sq_randgaus();
 
 #endif

@@ -4,17 +4,6 @@
 #include <stdio.h>
 
 /**
- * Takes 2-channel (quadrature) 8-bit data from the input stream,
- * and writes samples in the form of floats to the output stream,
- * in chunks of a given number of samples.
- * @param instream Input stream with 2-channel 8-bit data.
- * @param outstream Output stream of floats
- * @param nsamples Number of samples to process at a time
- * @return Code; negative if error.
- */
-int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples);
-
-/**
  * Takes a stream of floats (alternating real, imaginary) as input signal
  * and writes the instantaneous power samples to the output stream.
  * @param instream Input stream of float data
