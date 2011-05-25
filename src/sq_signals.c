@@ -36,7 +36,7 @@ int sq_gen_sine(FILE* outstream, unsigned int nsamples, unsigned int length, uns
             smpls_out[smpli<<1 + IMAG] = Cos[index] * SNR + sq_randgaus();
             //printf("%f\n", smpls_out[smpli<<1 + REAL]);
         }
-        fwrite(smpls_out, 8, nsamples, stdout);
+        fwrite(smpls_out, 8, nsamples, outstream);
     }
     
     free(Sin);
