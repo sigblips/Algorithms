@@ -109,3 +109,9 @@ int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns)
     return coli;
 }
 
+float sq_randgaus()
+{
+    float rand1 = ((float)rand() / RAND_MAX);
+    float rand2 = ((float)rand() / RAND_MAX);
+    return (float)sqrt(-2 * log(rand1)) * sin(2 * PI * rand2); 
+}

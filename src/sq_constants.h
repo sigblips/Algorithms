@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <math.h>
 
-//Error codes
+// Error codes
 #define err_arg_bounds -1
 #define err_stream_open -2
 #define err_stream_close -3
@@ -19,6 +19,9 @@
 #define SQ_STAGE1_FFT_LEN 4096
 #define MAX_ZOOM_LEN 134217728
 #define ZOOM_OUTPUT_BFR_LEN 1024
+
+// Math constants
+#define PI 3.1415926535897932384626433832795
 
 // Array indices
 #define REAL 0

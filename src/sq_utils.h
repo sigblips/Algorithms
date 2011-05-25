@@ -2,6 +2,7 @@
 #define SQ_UTILS_H
 
 #include <stdio.h>
+#include <math.h>
 #include <sys/types.h>
 
 /** 
@@ -36,5 +37,7 @@ int sq_read_array(float inarray[], FILE* outstream, int ncolumns);
  * @return If successful, the number of samples processed. Else, a negative error code.
  */
 int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns);
+
+float sq_randgaus();
 
 #endif
