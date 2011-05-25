@@ -33,8 +33,11 @@ int sq_gen_sine(FILE* outstream, unsigned int nsamples, unsigned int length, uns
             index = (int) ((float)(i*nsamples + smpli) / wavelength);
             index = index%sin_arr_length;
             smpls_out[smpli<<1 + REAL] = Sin[index] * SNR + sq_randgaus();
+            // TODO: The below statement segfaults after a few thousand iterations. Need to know why. 
+            // Doesn't happen with the real part. 
             smpls_out[smpli<<1 + IMAG] = Cos[index] * SNR + sq_randgaus();
-            //printf("%f\n", smpls_out[smpli<<1 + REAL]);
+            // TODO: Do we want randgauss to generate the same random sequence on every run of the program?
+            fprintf(stderr, "%f\t%f\t%f\n", smpls_out[smpli<<1 + REAL], smpls_out[smpli<<1 + IMAG], sq_randgaus());
         }
         fwrite(smpls_out, 8, nsamples, outstream);
     }
