@@ -39,7 +39,10 @@ int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
             //      mylog(msg);
         }
     }
-
+    
+    free(smpls_in);
+    free(smpls_out);
+    
     return 0;
 }
 
