@@ -1,5 +1,5 @@
 #ifndef __x86_64__
-#define _FILE_OFFSET_BITS 64
+    #define _FILE_OFFSET_BITS 64
 #endif
 
 #include <stdio.h>
@@ -32,13 +32,11 @@ char *usage_text[] =
     "                                                                        "
 };
 
+float *imgbfr;
 unsigned int rows = 0;
 unsigned int cols = 0;
 
-float *imgbfr;
-
 void (*scale_fnctn)(float* img_buf, int rows, int cols);
-
 
 int main(int argc, char *argv[])
 {
@@ -65,7 +63,16 @@ int main(int argc, char *argv[])
         }
     }
 
-    sq_read_img(stdin, imgbfr, rows, cols);
+    imgbfr = malloc(sizeof(float) * rows * cols);
+    
+    int read_status = sq_read_img(stdin, imgbfr, rows, cols);
+    
+    if(read_status < 0)
+    {
+        fprintf(stderr, "Read error, bad rows/cols count");
+        free(imgbfr);
+        exit(EXIT_FAILURE);
+    }
 
     scale_fnctn(imgbfr, rows, cols);
     sq_write_pnm(stdout, imgbfr, rows, cols);
