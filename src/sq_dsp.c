@@ -298,8 +298,8 @@ int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians
 
             re = smpls_bfr[(smpli<<1)+0];
             im = smpls_bfr[(smpli<<1)+1];
-            smpls_bfr[(smpli<<1)+0] = (re * (float)cos(radians) - im * (float)sin(radians));
-            smpls_bfr[(smpli<<1)+1] = (im * (float)cos(radians) + re * (float)sin(radians));
+            smpls_bfr[(smpli<<1)+0] = (re * (float)cos(angle) - im * (float)sin(angle));
+            smpls_bfr[(smpli<<1)+1] = (im * (float)cos(angle) + re * (float)sin(angle));
         }
 
         fwrite(smpls_bfr, 8, nsamples, outstream);
