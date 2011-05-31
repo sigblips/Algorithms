@@ -10,7 +10,7 @@ set_target_properties(setikit PROPERTIES OUTPUT_NAME "setikit")
 set_target_properties(setikit PROPERTIES VERSION ${setikit_VERSION})
 set_target_properties(setikit PROPERTIES SOVERSION ${setikit_VERSION_MAJOR})
 
-set(CORELIBS ${FFTW_LIBRARIES} ${GSL_LIBRARY} m)
+set(CORELIBS ${FFTW_LIBRARIES} ${GSL_LIBRARY} m g)
 target_link_libraries(setikit ${CORELIBS})
 
 add_subdirectory(blocks)
