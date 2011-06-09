@@ -10,6 +10,7 @@
 #define err_stream_close -3
 #define err_stream_read -4
 #define err_stream_write -5
+#define err_malloc -6
 
 // Some constants
 #define MAX_SMPLS_LEN 134217728

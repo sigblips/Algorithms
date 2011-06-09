@@ -15,10 +15,20 @@ int sq_gen_sine(FILE* outstream, unsigned int nsamples, unsigned int length, uns
     unsigned int smpli;
     unsigned int index;
     
+    float* Sin;
+    float* Cos;
+    float* smpls_out;
+    
     // generate LUT's for sine and cosine
-    float* Sin = malloc(sin_arr_length * sizeof(float));
-    float* Cos = malloc(sin_arr_length * sizeof(float));
-    float* smpls_out = malloc(nsamples* 2 * sizeof(float));
+    Sin = malloc(sin_arr_length * sizeof(float));
+    if(Sin == NULL)
+        return err_malloc;
+    Cos = malloc(sin_arr_length * sizeof(float));
+    if(Cos == NULL)
+        return err_malloc;
+    smpls_out = malloc(nsamples* 2 * sizeof(float));
+    if(smpls_out == NULL)
+        return err_malloc;
     
     for (index = 0; index < sin_arr_length; ++index)
     {

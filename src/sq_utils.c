@@ -123,7 +123,11 @@ int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
     unsigned int smpli;
     
     smpls_in = malloc(nsamples * sizeof(char) * 2);
+    if(smpls_in == NULL)
+        return err_malloc;
     smpls_out = malloc(nsamples * sizeof(float) * 2);
+    if(smpls_out == NULL)
+        return err_malloc;
     
     while (fread(smpls_in, 2, nsamples, instream) == nsamples)
     {

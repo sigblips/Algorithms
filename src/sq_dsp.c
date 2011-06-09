@@ -17,7 +17,9 @@ int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples)
         return err_arg_bounds;
 
     smpls_bfr = malloc(nsamples * sizeof(float) * 2);
-
+    if(smpls_bfr == NULL)
+        return err_malloc;
+    
     while (fread(smpls_bfr, sizeof(float) * 2, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples ; smpli++)
@@ -46,8 +48,13 @@ int sq_sum(FILE* instream, FILE* outstream, unsigned int nsamples)
     float *sum_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
+    if(smpls_bfr == NULL)
+        return err_malloc;
+    
     sum_bfr = malloc(nsamples * 4 * 2);
-
+    if(smpls_bfr == NULL)
+        return err_malloc;
+    
     unsigned int smpli;
 
     for (smpli = 0; smpli < nsamples; smpli++)
@@ -83,8 +90,14 @@ int sq_window(FILE* instream, FILE* outstream, unsigned int wndw_len)
         return err_arg_bounds;
 
     wndw_bfr = malloc(wndw_len * 4);
+    if(wndw_bfr == NULL)
+        return err_malloc;
     in_bfr = malloc(wndw_len * 4 * 2);
+    if(in_bfr == NULL)
+        return err_malloc;
     out_bfr = malloc(wndw_len * 4 * 2);
+    if(out_bfr == NULL)
+        return err_malloc;
 
     unsigned int wndwi, bfri;
 
@@ -127,7 +140,11 @@ int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int com
     float *rbfr;
 
     sbfr = malloc(nsamples * sizeof(cmplx));
+    if(sbfr == NULL)
+        return err_malloc;
     rbfr = malloc(nsamples * sizeof(float));
+    if(rbfr == NULL)
+        return err_malloc;
 
     while (fread(sbfr, sizeof(cmplx), nsamples, instream) == nsamples)
     {
@@ -193,7 +210,9 @@ int sq_offset(FILE* instream, FILE* outstream, unsigned int nsamples, float real
     float *smpls_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
-
+    if(smpls_bfr == NULL)
+        return err_malloc;
+    
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
     {
         for (smpli = 0; smpli < nsamples; smpli++)
@@ -219,6 +238,8 @@ int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples)
     unsigned int datai;
 
     data_bfr = malloc(nsamples * sizeof(float) * 2);
+    if(data_bfr == NULL)
+        return err_malloc;
 
     while (fread(data_bfr, 8, nsamples, instream) == nsamples)
     {
@@ -242,6 +263,8 @@ int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, fl
     float *smpls_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
+    if(smpls_bfr == NULL)
+        return err_malloc;
 
     float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
@@ -286,6 +309,8 @@ int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians
     radians = radians * -1.0;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
+    if(smpls_bfr == NULL)
+        return err_malloc;
 
     float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
@@ -325,7 +350,11 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
     outbfri = 0;
 
     input_bfr = malloc(zoom_len * sizeof(float) * 2);
+    if(input_bfr == NULL)
+        return err_malloc;
     output_bfr = malloc(ZOOM_OUTPUT_BFR_LEN * sizeof(float) * 2);
+    if(output_bfr == NULL)
+        return err_malloc;
 
     while (fread(input_bfr, sizeof(float) * 2, zoom_len, instream) == zoom_len)
     {
@@ -388,6 +417,8 @@ int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int f
 
     wndwlen = folds * fftlen;
     wndwbfr = malloc(wndwlen * sizeof(float));
+    if(wndwbfr == NULL)
+        return err_malloc;
 
     init_window(wndwbfr, wndwlen, folds);
 
@@ -407,8 +438,14 @@ int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int f
         readlen = (fftlen * 2) / 4;
 
     readbfr = malloc(readlen * sizeof(cmplx));
+    if(readbfr == NULL)
+        return err_malloc;
     smplbfr = malloc(wndwlen * sizeof(cmplx));
+    if(smplbfr == NULL)
+        return err_malloc;
     fftbfr = malloc(fftlen * sizeof(cmplx));
+    if(fftbfr == NULL)
+        return err_malloc;
 
     // initially fill the sample buffer to satisfy the first weight,
     // overlap, and add
