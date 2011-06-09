@@ -8,6 +8,7 @@
 #include <inttypes.h>
 
 #include "sq_dsp.h"
+#include "sq_utils.h"
 
 unsigned int zoom_len = 0;
 
@@ -26,10 +27,12 @@ int main(int argc, char **argv)
 
     int status = sq_zoom(stdin, stdout, zoom_len);
     
-    if (status < 0)
+    if(status < 0)
     {
-        printf("sqzoom -l samples-block-size\n");
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         exit(EXIT_FAILURE);
     }
+    
     exit(EXIT_SUCCESS);
 }

@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "sq_dsp.h"
+#include "sq_utils.h"
 
 unsigned int data_len = 1000000;
 
@@ -28,7 +29,8 @@ int main(int argc, char **argv)
     
     if(status < 0)
     {
-        fprintf(stderr, "sqconjugate: bad args.");
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         exit(EXIT_FAILURE);
     }
     

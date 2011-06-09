@@ -158,3 +158,24 @@ float sq_randgaus()
     float rand2 = ((float)rand() / RAND_MAX);
     return (float)sqrt(-2 * log(rand1)) * sin(2 * PI * rand2); 
 }
+
+void sq_error_print(char* message)
+{
+    fprintf(stderr, "%s", message);
+}
+
+void sq_error_handle(int errcode)
+{
+    switch(errcode)
+    {
+        case -1: sq_error_print("Argument(s) out-of-bounds."); break;
+        case -2: sq_error_print("Could not open stream."); break;
+        case -3: sq_error_print("Could not close stream."); break;
+        case -4: sq_error_print("Could not read from stream."); break;
+        case -5: sq_error_print("Could not write to stream."); break;
+        case -6: sq_error_print("Could not allocate memory."); break;
+        default:
+            if(errcode < 0)
+                sq_error_print("Error.");
+    }
+}

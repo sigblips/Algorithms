@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "sq_signals.h"
+#include "sq_utils.h"
 
 unsigned int nsamples = 1000000;
 unsigned int length = 16777216;
@@ -46,6 +47,8 @@ int main(int argc, char *argv[])
     
     if(status < 0)
     {
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         exit(EXIT_FAILURE);
     }
     

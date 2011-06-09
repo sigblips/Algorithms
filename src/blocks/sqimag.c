@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
     
     if(status < 0)
     {
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         print_usage(usage_text);
         exit(EXIT_FAILURE);
     }

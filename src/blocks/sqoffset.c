@@ -8,6 +8,7 @@
 #include <inttypes.h>
 
 #include "sq_dsp.h"
+#include "sq_utils.h"
 
 unsigned int smpls_len = 1000000;
 float real_delta = 0.0;
@@ -36,7 +37,8 @@ int main(int argc, char **argv)
     
     if(status < 0)
     {
-        fprintf(stderr, "sqoffset: bad args.");
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         exit(EXIT_FAILURE);
     }
     

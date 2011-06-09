@@ -49,7 +49,9 @@ int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns);
  */
 int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples);
 
-
 float sq_randgaus();
+
+void sq_error_print(char* message);
+void sq_error_handle(int errcode);
 
 #endif

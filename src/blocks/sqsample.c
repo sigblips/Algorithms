@@ -9,6 +9,7 @@
 
 #include "sq_constants.h"
 #include "sq_dsp.h"
+#include "sq_utils.h"
 
 int main(int argc, char **argv)
 {
@@ -16,7 +17,8 @@ int main(int argc, char **argv)
     
     if(status < 0)
     {
-        fprintf(stderr, "sqsmpls: Bad args!");
+        fprintf(stderr, "%s encountered a fatal error.", argv[0]);
+        sq_error_handle(status);
         exit(EXIT_FAILURE);
     }
     
