@@ -5,12 +5,19 @@
 #include "sq_imaging.h"
 #include "sq_constants.h"
 
-void sq_no_scale(float* img_buf, int rows, int cols)
+int sq_alloc_img(float* img_buf, int rows, int cols)
+{
+    img_buf = malloc(sizeof(float) * rows * cols);
+    if(img_buf == NULL)
+        return err_malloc;
+}
+
+int sq_no_scale(float* img_buf, int rows, int cols)
 {
 
 }
 
-void sq_linear_scale(float* img_buf, int rows, int cols)
+int sq_linear_scale(float* img_buf, int rows, int cols)
 {
     unsigned int imgi;
 
@@ -34,7 +41,7 @@ void sq_linear_scale(float* img_buf, int rows, int cols)
     }
 }
 
-void sq_power_scale(float* img_buf, int rows, int cols)
+int sq_power_scale(float* img_buf, int rows, int cols)
 {
     unsigned int imgi;
     float imgvalf;
@@ -98,7 +105,7 @@ int sq_read_img(FILE* instream, float* img_buf, int rows, int cols)
     }
 }
 
-void sq_write_pnm(FILE* outstream, float* img_buf, int rows, int cols)
+int sq_write_pnm(FILE* outstream, float* img_buf, int rows, int cols)
 {
     unsigned int imgi;
     float imgvalf;

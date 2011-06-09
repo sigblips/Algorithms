@@ -8,6 +8,7 @@
 
 #include "sq_utils.h"
 #include "sq_imaging.h"
+#include "sq_constants.h"
 
 //          1         2         3         4         5         6         7
 // 123456789012345678901234567890123456789012345678901234567890123456789012
@@ -36,7 +37,7 @@ float *imgbfr;
 unsigned int rows = 0;
 unsigned int cols = 0;
 
-void (*scale_fnctn)(float* img_buf, int rows, int cols);
+int (*scale_fnctn)(float* img_buf, int rows, int cols);
 
 int main(int argc, char *argv[])
 {
@@ -64,13 +65,18 @@ int main(int argc, char *argv[])
     }
 
     imgbfr = malloc(sizeof(float) * rows * cols);
+    if(imgbfr == NULL)
+    {
+        sq_error_handle(err_malloc);
+        exit(EXIT_FAILURE);
+    }
     
     int read_status = sq_read_img(stdin, imgbfr, rows, cols);
     
     if(read_status < 0)
     {
-        fprintf(stderr, "Read error, bad rows/cols count");
         free(imgbfr);
+        sq_error_handle(read_status);
         exit(EXIT_FAILURE);
     }
 
