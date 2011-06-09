@@ -176,6 +176,8 @@ void sq_error_handle(int errcode)
         case -6: sq_error_print("Could not allocate memory."); break;
         default:
             if(errcode < 0)
-                sq_error_print("Error.");
+                sq_error_print("Unhandled error.");
     }
+    
+    sq_error_print("\n");
 }
