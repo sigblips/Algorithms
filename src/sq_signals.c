@@ -9,7 +9,7 @@
 int sq_gen_sine(FILE* outstream, unsigned int nsamples, unsigned int length, unsigned int sin_arr_length, float wavelength, float SNR)
 {
     if((nsamples <= 0) || (nsamples > MAX_SMPLS_LEN))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
     
     unsigned int i;
     unsigned int smpli;
@@ -22,13 +22,13 @@ int sq_gen_sine(FILE* outstream, unsigned int nsamples, unsigned int length, uns
     // generate LUT's for sine and cosine
     Sin = malloc(sin_arr_length * sizeof(float));
     if(Sin == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     Cos = malloc(sin_arr_length * sizeof(float));
     if(Cos == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     smpls_out = malloc(nsamples* 2 * sizeof(float));
     if(smpls_out == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     for (index = 0; index < sin_arr_length; ++index)
     {

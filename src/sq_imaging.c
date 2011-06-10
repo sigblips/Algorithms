@@ -9,7 +9,7 @@ int sq_alloc_img(float* img_buf, int rows, int cols)
 {
     img_buf = malloc(sizeof(float) * rows * cols);
     if(img_buf == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 }
 
 int sq_no_scale(float* img_buf, int rows, int cols)
@@ -87,7 +87,7 @@ int sq_read_img(FILE* instream, float* img_buf, int rows, int cols)
     unsigned int rowi;
 
     if (!((rows > 0) && (cols > 0)))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     for (rowi = 0; rowi < rows; rowi++)
     {
@@ -101,7 +101,7 @@ int sq_read_img(FILE* instream, float* img_buf, int rows, int cols)
     if (!(rows > 0))
     {
         free(img_buf);
-        return err_stream_read;
+        return ERR_STREAM_READ;
     }
 }
 

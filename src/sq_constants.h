@@ -5,12 +5,12 @@
 #include <math.h>
 
 // Error codes
-#define err_arg_bounds -1
-#define err_stream_open -2
-#define err_stream_close -3
-#define err_stream_read -4
-#define err_stream_write -5
-#define err_malloc -6
+#define ERR_ARG_BOUNDS -1
+#define ERR_STREAM_OPEN -2
+#define ERR_STREAM_CLOSE -3
+#define ERR_STREAM_READ -4
+#define ERR_STREAM_WRITE -5
+#define ERR_MALLOC -6
 
 // Some constants
 #define MAX_SMPLS_LEN 134217728

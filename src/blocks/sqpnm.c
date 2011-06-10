@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     imgbfr = malloc(sizeof(float) * rows * cols);
     if(imgbfr == NULL)
     {
-        sq_error_handle(err_malloc);
+        sq_error_handle(ERR_MALLOC);
         exit(EXIT_FAILURE);
     }
     

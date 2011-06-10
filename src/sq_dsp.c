@@ -14,11 +14,11 @@ int sq_power(FILE* instream, FILE* outstream, unsigned int nsamples)
     unsigned int smpli;
 
     if ((nsamples < 2) || (nsamples >= MAX_SMPLS_LEN))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     smpls_bfr = malloc(nsamples * sizeof(float) * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     while (fread(smpls_bfr, sizeof(float) * 2, nsamples, instream) == nsamples)
     {
@@ -42,18 +42,18 @@ int sq_sum(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
 
     if (!((nsamples >= 2) && (nsamples <= MAX_SMPLS_LEN)))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     float *smpls_bfr;
     float *sum_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     sum_bfr = malloc(nsamples * 4 * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     unsigned int smpli;
 
@@ -87,17 +87,17 @@ int sq_window(FILE* instream, FILE* outstream, unsigned int wndw_len)
     float *out_bfr;
 
     if (!((wndw_len >= 2) && (wndw_len <= MAX_WNDW_LEN)))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     wndw_bfr = malloc(wndw_len * 4);
     if(wndw_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     in_bfr = malloc(wndw_len * 4 * 2);
     if(in_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     out_bfr = malloc(wndw_len * 4 * 2);
     if(out_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     unsigned int wndwi, bfri;
 
@@ -131,9 +131,9 @@ int sq_window(FILE* instream, FILE* outstream, unsigned int wndw_len)
 int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int component)
 {
     if (nsamples <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
     if ((component != 0) && (component != 1))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     int i;
     cmplx *sbfr;
@@ -141,10 +141,10 @@ int sq_component(FILE* instream, FILE* outstream, unsigned int nsamples, int com
 
     sbfr = malloc(nsamples * sizeof(cmplx));
     if(sbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     rbfr = malloc(nsamples * sizeof(float));
     if(rbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     while (fread(sbfr, sizeof(cmplx), nsamples, instream) == nsamples)
     {
@@ -172,7 +172,7 @@ int sq_imag(FILE* instream, FILE* outstream, unsigned int nsamples)
 int sq_fft(FILE* instream, FILE* outstream, unsigned int fft_len, unsigned char is_inverted, unsigned char is_measured)
 {
     if (fft_len <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     fftwf_complex *fft_bfr;
     fftwf_plan plan;
@@ -204,14 +204,14 @@ int sq_fft(FILE* instream, FILE* outstream, unsigned int fft_len, unsigned char 
 int sq_offset(FILE* instream, FILE* outstream, unsigned int nsamples, float real_delta, float imag_delta)
 {
     if (nsamples <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     unsigned int smpli;
     float *smpls_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
     {
@@ -232,14 +232,14 @@ int sq_offset(FILE* instream, FILE* outstream, unsigned int nsamples, float real
 int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
     if (!((nsamples >= 2) && (nsamples <= MAX_SMPLS_LEN)))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     float *data_bfr;
     unsigned int datai;
 
     data_bfr = malloc(nsamples * sizeof(float) * 2);
     if(data_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     while (fread(data_bfr, 8, nsamples, instream) == nsamples)
     {
@@ -257,14 +257,14 @@ int sq_conjugate(FILE* instream, FILE* outstream, unsigned int nsamples)
 int sq_scaleandrotate(FILE* instream, FILE* outstream, unsigned int nsamples, float scale_factor, float radians)
 {
     if (nsamples <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     unsigned int smpli;
     float *smpls_bfr;
 
     smpls_bfr = malloc(nsamples * 4 * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
@@ -298,7 +298,7 @@ int sq_rotate(FILE* instream, FILE* outstream, unsigned int nsamples, float radi
 int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians)
 {
     if (nsamples <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     unsigned int smpli;
     float *smpls_bfr;
@@ -310,7 +310,7 @@ int sq_mix(FILE* instream, FILE* outstream, unsigned int nsamples, float radians
 
     smpls_bfr = malloc(nsamples * 4 * 2);
     if(smpls_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     float re, im;
     while (fread(smpls_bfr, 8, nsamples, instream) == nsamples)
@@ -339,7 +339,7 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
 {
     // TODO: Not properly tested yet
     if (!((zoom_len >= 2) && (zoom_len <= MAX_ZOOM_LEN)))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     float *input_bfr;
     float *output_bfr;
@@ -351,10 +351,10 @@ int sq_zoom(FILE* instream, FILE* outstream, unsigned int zoom_len)
 
     input_bfr = malloc(zoom_len * sizeof(float) * 2);
     if(input_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     output_bfr = malloc(ZOOM_OUTPUT_BFR_LEN * sizeof(float) * 2);
     if(output_bfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     while (fread(input_bfr, sizeof(float) * 2, zoom_len, instream) == zoom_len)
     {
@@ -418,7 +418,7 @@ int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int f
     wndwlen = folds * fftlen;
     wndwbfr = malloc(wndwlen * sizeof(float));
     if(wndwbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     init_window(wndwbfr, wndwlen, folds);
 
@@ -439,13 +439,13 @@ int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int f
 
     readbfr = malloc(readlen * sizeof(cmplx));
     if(readbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     smplbfr = malloc(wndwlen * sizeof(cmplx));
     if(smplbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     fftbfr = malloc(fftlen * sizeof(cmplx));
     if(fftbfr == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
 
     // initially fill the sample buffer to satisfy the first weight,
     // overlap, and add
@@ -455,7 +455,7 @@ int sq_wola(FILE* instream, FILE* outstream, unsigned int fftlen, unsigned int f
         free(smplbfr);
         free(readbfr);
         free(wndwbfr);
-        return err_stream_read;
+        return ERR_STREAM_READ;
     }
 
     smpli = 0;

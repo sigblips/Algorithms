@@ -73,7 +73,7 @@ void alloc_float_2d(float** array, uint nrows, unsigned int ncolumns)
 int sq_read_array(float inarray[], FILE* outstream, int ncolumns)
 {
     if (ncolumns <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     unsigned int coli;
     unsigned long length = sizeof(inarray) / sizeof(float);
@@ -92,7 +92,7 @@ int sq_read_array(float inarray[], FILE* outstream, int ncolumns)
 int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns)
 {
     if (ncolumns <= 0)
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
 
     unsigned long coli = 0;
     float val;
@@ -113,7 +113,7 @@ int sq_read_stream(FILE* instream, FILE* outstream, int ncolumns)
 int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
 {
     if ((nsamples <= 0) || (nsamples > MAX_SMPLS_LEN))
-        return err_arg_bounds;
+        return ERR_ARG_BOUNDS;
     
     uint64_t total_bytes_next_trigger = TOTAL_BYTES_TRIGGER_VAL;
     signed char *smpls_in;
@@ -124,10 +124,10 @@ int sq_sample(FILE* instream, FILE* outstream, unsigned int nsamples)
     
     smpls_in = malloc(nsamples * sizeof(char) * 2);
     if(smpls_in == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     smpls_out = malloc(nsamples * sizeof(float) * 2);
     if(smpls_out == NULL)
-        return err_malloc;
+        return ERR_MALLOC;
     
     while (fread(smpls_in, 2, nsamples, instream) == nsamples)
     {
@@ -168,12 +168,12 @@ void sq_error_handle(int errcode)
 {
     switch(errcode)
     {
-        case -1: sq_error_print("Argument(s) out-of-bounds."); break;
-        case -2: sq_error_print("Could not open stream."); break;
-        case -3: sq_error_print("Could not close stream."); break;
-        case -4: sq_error_print("Could not read from stream."); break;
-        case -5: sq_error_print("Could not write to stream."); break;
-        case -6: sq_error_print("Could not allocate memory."); break;
+        case ERR_ARG_BOUNDS:    sq_error_print("Argument(s) out-of-bounds."); break;
+        case ERR_STREAM_OPEN:   sq_error_print("Could not open stream."); break;
+        case ERR_STREAM_CLOSE:  sq_error_print("Could not close stream."); break;
+        case ERR_STREAM_READ:   sq_error_print("Could not read from stream."); break;
+        case ERR_STREAM_WRITE:  sq_error_print("Could not write to stream."); break;
+        case ERR_MALLOC:        sq_error_print("Could not allocate memory."); break;
         default:
             if(errcode < 0)
                 sq_error_print("Unhandled error.");
